@@ -2,8 +2,13 @@
 
 #include <iostream>
 
+/*
+  value type can be deduced from T,
+  we will improve this in CPP
+*/
+
 template<typename T>
-int MyCount(T begin, T end, int value) {
+int MyCount(T begin, T end, DataType value) {
     int cc = 0;
     T pointer = begin;
     while (pointer != end) {

@@ -1,15 +1,16 @@
 #include "slist.h"
 
 #include <iostream>
+#include <type_traits>
 
-/*
-   compare == is unsafe for floating value,
-   how can we limit this count only for integral types?
-   we will improve it in Modern-CPP
- */
 template<typename T>
-int MyCount(T begin, T end,
-            typename std::iterator_traits<T>::value_type value) {
+using my_value_t = typename std::enable_if_t<
+        std::is_integral<
+            typename std::iterator_traits<T>::value_type>::value,
+        typename std::iterator_traits<T>::value_type>;
+
+template<typename T>
+int MyCount(T begin, T end, my_value_t<T> value) {
     int cc = 0;
     T pointer = begin;
     while (pointer != end) {
@@ -38,6 +39,8 @@ int main(int argc, char* argv[]) {
     for (auto i = 0; i < n; ++i) {
         list2.AddTail(elements[i]);
     }
+
+    // Error:: it is not safe to comapre floating numbers
     std::cout << MyCount(list2.begin(), list2.end(), value) << std::endl;
     return 0;
 }
