@@ -17,25 +17,16 @@ int MyCount(T begin, T end, int value) {
 
 int main(int argc, char* argv[])
 {
-    slist * list = slist_create();
+    slist list;
     int elements[] = {1, 3, 2, 5, 6, 5, 5, 2};
     const unsigned int n = sizeof(elements) / sizeof(int);
 
-    /*
-      problem: we have introduced a lot of new names in the global namespace
-      solution: we will improve it with class encapsulation in CPP
-    */
     for (unsigned int i = 0; i < n; i++) {
-        slist_add_tail(list, elements[i]);
+        list.slist_add_tail(elements[i]);
     }
 
     int value = 2;
     std::cout << MyCount((int*)elements, elements + n, value) << std::endl;
-    std::cout << MyCount(slist_begin(list), slist_end(list), value) << std::endl;
-
-    /*
-      problem: we also forgot to release memory usage for list
-      solution: we will improve this in CPP
-    */
+    std::cout << MyCount(list.begin(), list.end(), value) << std::endl;
     return 0;
 }
