@@ -6,4 +6,12 @@ With constrains of available technical facilities in different stages, which inc
 
 C ... C/C++  ... C++ ... Modern C++
 
-This is aimed to understand the benefits from language development over times. 
+This is aimed to understand the benefits from language development over times.
+
+C implementation - data structure processing via helper functions
+
+C-CPP - operator overloading to make the traversal easier, like using a pointer
+
+CPP - using members function, class encapsulation and compatibilities with STL algorithms
+
+Modern-CPP - checking for template type, for safer usage.
