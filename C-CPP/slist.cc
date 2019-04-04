@@ -2,229 +2,78 @@
 
 #include <stdlib.h>
 
-static snode * snode_create(datatype data)
-{
-    snode * node = (snode*)malloc(sizeof(snode));
+static SNode * SNodeCreate(DataType data) {
+    SNode * node = (SNode*)malloc(sizeof(SNode));
     if (node) {
         node->data = data;
         node->next = NULL;
     }
-
     return node;
 }
 
-slist * slist_create(void)
-{
-    slist * list = (slist*)malloc(sizeof(slist));
+SList * SListCreate(void) {
+    SList * list = (SList*)malloc(sizeof(SList));
     if (list) {
         list->head = NULL;
         list->tail = NULL;
-        list->count = 0;
     }
-
     return list;
 }
 
-void slist_empty(slist * list)
-{
-    snode * node, * temp;
+void SListDelete(SList * list) {
+    SNode * node, * temp;
     node = list->head;
     while (node != NULL) {
         temp = node->next;
         free(node);
         node = temp;
     }
+    free(list);
 }
 
-void slist_delete(slist * list)
-{
-    if (list) {
-        slist_empty(list);
-        free(list);
-    }
-}
-
-void slist_add_tail(slist * list, datatype data)
-{
-    snode * node = snode_create(data);
+void SListAddTail(SList * list, DataType data) {
+    SNode * node = SNodeCreate(data);
     if (list->head == NULL) {
         /* Adding the first node */
         list->head = node;
         list->tail = node;
-    }
-    else {
+    } else {
         list->tail->next = node;
         list->tail = node;
     }
-    list->count++;
 }
 
-void slist_add_head(slist * list, datatype data)
-{
-    snode * node = snode_create(data);
-    if (list->tail == NULL) {
-        /* Adding the first node */
-        list->head = node;
-        list->tail = node;
-    }
-    else {
-        node->next = list->head;
-        list->head = node;
-    }
-    list->count++;
-}
+/*
+    STL style supports
+*/
 
-datatype slist_remove_head(slist * list)
-{
-    datatype data = 0;
-
-    if (list->head) {
-        snode *temp = list->head;
-        if (list->head->next) {
-            list->head = list->head->next;
-        }
-        else {
-            /* List is now empty */
-            list->head = NULL;
-            list->tail = NULL;
-        }
-        data = temp->data;
-        free(temp);
-        list->count--;
-        if (list->count == 1) {
-            list->tail = list->head;
-        }
-    }
-
-    return data;
-}
-
-datatype slist_remove_tail(slist * list)
-{
-    datatype data = 0;
-
-    if (list->tail) {
-        snode *current, *previous = NULL;
-        current = list->head;
-        while (current->next) {
-            previous = current;
-            current = current->next;
-        }
-        data = current->data;
-        free(current);
-        if (previous) {
-            previous->next = NULL;
-        }
-        else {
-            /* List is now empty */
-            list->head = NULL;
-            list->tail = NULL;
-        }
-        list->count--;
-        if (list->count == 1) {
-            list->head = list->tail;
-        }
-    }
-
-    return data;
-}
-
-datatype slist_remove(slist *list, snode *node, snode *previous)
-{
-    datatype data;
-    if (node == list->head) {
-        data = slist_remove_head(list);
-    }
-    else {
-        previous->next = node->next;
-        data = node->data;
-        list->count--;
-        if (list->count == 1) {
-            list->tail = list->head;
-        }
-        else if (node == list->tail) {
-            list->tail = previous;
-        }
-        free(node);
-    }
-    return data;
-}
-
-void slist_insert_before(slist * list, snode * node, snode * previous, datatype data)
-{
-    if (node == list->head) {
-        slist_add_head(list, data);
-    }
-    else {
-        snode * newnode = snode_create(data);
-        newnode->next = node;
-        previous->next = newnode;
-        list->count++;
-    }
-}
-
-snode * slist_insert_after(slist * list, snode * node, datatype data)
-{
-    snode * newnode;
-    if (node == NULL) {
-        slist_add_head(list, data);
-        newnode = list->head;
-    }
-    else {
-        newnode = snode_create(data);
-        if (newnode) {
-            newnode->next = node->next;
-            node->next = newnode;
-            if (node == list->tail) {
-                list->tail = newnode;
-            }
-        }
-        list->count++;
-    }
-    return newnode;
-}
-
-void slist_for_each(const slist * list, slist_forfn fun)
-{
-    snode * node;
-    for (node = list->head; node != NULL; node = node->next) {
-        fun(node->data);
-    }
-}
-
-unsigned int slist_get_count(const slist * list)
-{
-    return list->count;
-}
-
-
-snode_pointer slist_begin(slist* list) {
+SListPointer Begin(SList* list) {
     return {list->head};
 }
 
-snode_pointer slist_end(slist* list) {
+SListPointer End(SList* list) {
     return {NULL};
 }
 
-snode_pointer& operator++(snode_pointer& obj) {
-    obj.p = obj.p->next;
-    return obj;
+SListPointer& operator++(SListPointer& pointer) {
+    pointer.current = pointer.current->next;
+    return pointer;
 }
 
-snode_pointer operator++(snode_pointer& obj, int) {
-    snode_pointer result(obj);
-    ++obj;
+SListPointer operator++(SListPointer& pointer, int) {
+    SListPointer result(pointer);
+    ++pointer;
     return result;
 }
 
-datatype operator*(snode_pointer& obj) {
-    return obj.p->data;
+DataType operator*(SListPointer& pointer) {
+    return pointer.current->data;
 }
 
-bool operator==(snode_pointer& obj1, snode_pointer& obj2) {
-    return obj1.p == obj2.p;
+bool operator==(SListPointer& pointer1, SListPointer& pointer2) {
+    return pointer1.current == pointer2.current;
 }
 
-bool operator!=(snode_pointer& obj1, snode_pointer& obj2) {
-    return obj1.p != obj2.p;
+bool operator!=(SListPointer& pointer1, SListPointer& pointer2) {
+    return pointer1.current != pointer2.current;
 }

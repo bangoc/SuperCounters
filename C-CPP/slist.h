@@ -1,48 +1,36 @@
 #ifndef SLIST_H
 #define SLIST_H
 
-typedef int datatype;
+typedef int DataType;
 
-struct snode {
-    datatype data;
-    struct snode * next;
+struct SNode {
+    DataType data;
+    struct SNode * next;
 };
-typedef struct snode snode;
+typedef struct SNode SNode;
 
-struct slist {
-    snode * head;
-    snode * tail;
-    unsigned int count;
+struct SList {
+    SNode * head;
+    SNode * tail;
 };
-typedef struct slist slist;
+typedef struct SList SList;
 
-typedef void (*slist_forfn)(datatype);
-
-slist * slist_create(void);
-void slist_empty(slist * list);
-void slist_delete(slist * list);
-void slist_add_tail(slist * list, datatype data);
-void slist_add_head(slist * list, datatype data);
-datatype slist_remove_head(slist * list);
-datatype slist_remove_tail(slist * list);
-datatype slist_remove(slist *list, snode *node, snode *previous);
-void slist_insert_before(slist * list, snode * node, snode * previous, datatype data);
-snode * slist_insert_after(slist * list, snode * node, datatype data);
-void slist_for_each(const slist * list, slist_forfn fun);
-unsigned int slist_get_count(const slist * list);
+SList * SListCreate(void);
+void SListDelete(SList * list);
+void SListAddTail(SList * list, DataType data);
 
 /*
 STL style supports
 */
-struct snode_pointer {
-  snode* p;
+struct SListPointer {
+  SNode* current;
 };
-snode_pointer slist_begin(slist* list);
-snode_pointer slist_end(slist* list);
-snode_pointer& operator++(snode_pointer& obj);
-snode_pointer operator++(snode_pointer& obj, int);
-datatype operator*(snode_pointer& obj);
-bool operator==(snode_pointer& obj1, snode_pointer& obj2);
-bool operator!=(snode_pointer& obj1, snode_pointer& obj2);
+SListPointer Begin(SList* list);
+SListPointer End(SList* list);
+SListPointer& operator++(SListPointer& pointer);
+SListPointer operator++(SListPointer& pointer, int);
+DataType operator*(SListPointer& pointer);
+bool operator==(SListPointer& pointer1, SListPointer& pointer2);
+bool operator!=(SListPointer& pointer1, SListPointer& pointer2);
 
 #endif /* SLIST_H */
