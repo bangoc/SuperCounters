@@ -15,14 +15,13 @@ int MyCount(T begin, T end, int value) {
     return cc;
 }
 
-int main(int argc, char* argv[])
-{
-    slist list;
+int main(int argc, char* argv[]) {
+    SList list;
     int elements[] = {1, 3, 2, 5, 6, 5, 5, 2};
     const unsigned int n = sizeof(elements) / sizeof(int);
 
     for (unsigned int i = 0; i < n; i++) {
-        list.slist_add_tail(elements[i]);
+        list.AddTail(elements[i]);
     }
 
     int value = 2;
