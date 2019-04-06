@@ -1,6 +1,8 @@
 #ifndef SLIST_H
 #define SLIST_H
 
+#include <iostream>
+#include <initializer_list>
 #include <iterator>
 
 template<typename DataType>
@@ -19,9 +21,14 @@ class SList {
   /*
     Will have problem with copy, but we don't discuss it here
   */
-  SList() {
-    head = nullptr;
-    tail = nullptr;
+  SList() : SList ({}) {
+  }
+
+  SList(std::initializer_list<DataType> values) {
+    head = tail = nullptr;
+    for (DataType data: values) {
+      AddTail(data);
+    }
   }
 
   ~SList() {

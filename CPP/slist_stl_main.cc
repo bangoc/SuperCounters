@@ -21,10 +21,20 @@ int main(int argc, char* argv[]) {
     std::cout << std::count((int*)elements, elements + n, value) << std::endl;
     std::cout << std::count(list.begin(), list.end(), value) << std::endl;
 
-    SList<float> list2;
-    for (auto i = 0; i < n; ++i) {
-        list2.AddTail(elements[i]);
+    float f = 0.1f;
+    float one = 0;
+    for (int i = 0; i < 10; ++i) {
+        one += f;
     }
-    std::cout << std::count(list2.begin(), list2.end(), value) << std::endl;
+    std::cout << "one = " << one << " " << std::endl;
+    /*
+        We will simplify this initialization in Modern-CPP
+    */
+    float elements2[] = {one, one, 2, 3, 5};
+    SList<float> list2;
+    for (auto i = 0; i < 5; ++i) {
+        list2.AddTail(elements2[i]);
+    }
+    std::cout << std::count(list2.begin(), list2.end(), 1.0f) << std::endl;
     return 0;
 }

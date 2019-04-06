@@ -25,11 +25,6 @@ int main(int argc, char* argv[])
     SList * list = SListCreate();
     int elements[] = {1, 3, 2, 5, 6, 5, 5, 2};
     const unsigned int n = sizeof(elements) / sizeof(int);
-
-    /*
-      problem: we have introduced a lot of new names in the global namespace
-      solution: we will improve it with class encapsulation in CPP
-    */
     for (unsigned int i = 0; i < n; i++) {
         SListAddTail(list, elements[i]);
     }
